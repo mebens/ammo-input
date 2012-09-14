@@ -1,4 +1,4 @@
-input = {}
+local input = {}
 input.key = {}
 input.mouse = {}
 input._maps = {}
