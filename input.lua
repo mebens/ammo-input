@@ -25,6 +25,18 @@ function input.released(name)
   return input._check(name, "released")
 end
 
+function input.axisPressed(negative, positive)
+  return input._checkAxis(negative, positive, "pressed")
+end
+
+function input.axisDown(negative, positive)
+  return input._checkAxis(negative, positive, "down")
+end
+
+function input.axisReleased(negative, positive)
+  return input._checkAxis(negative, positive, "released")
+end
+
 function input.update()
   input.key.pressed = { count = 0 }
   input.key.released = { count = 0 }
@@ -82,6 +94,13 @@ function input._check(name, type)
   end
   
   return false
+end
+
+function input._checkAxis(negative, positive, type)
+  local axis = 0
+  if input._check(negative, type) then axis = axis - 1 end
+  if input._check(positive, type) then axis = axis + 1 end
+  return axis
 end
 
 for _, v in pairs{"pressed", "down", "released"} do
