@@ -14,27 +14,52 @@ function input.define(t, ...)
 end
 
 function input.pressed(name)
-  return input._check(name, "pressed")
+  return input.check(name, "pressed")
 end
 
 function input.down(name)
-  return input._check(name, "down")
+  return input.check(name, "down")
 end
 
 function input.released(name)
-  return input._check(name, "released")
+  return input.check(name, "released")
 end
 
 function input.axisPressed(negative, positive)
-  return input._checkAxis(negative, positive, "pressed")
+  return input.checkAxis(negative, positive, "pressed")
 end
 
 function input.axisDown(negative, positive)
-  return input._checkAxis(negative, positive, "down")
+  return input.checkAxis(negative, positive, "down")
 end
 
 function input.axisReleased(negative, positive)
-  return input._checkAxis(negative, positive, "released")
+  return input.checkAxis(negative, positive, "released")
+end
+
+function input.check(name, type)
+  local map = input._maps[name]
+  
+  if map.key then
+    for _, v in pairs(map.key) do
+      if input.key[type][v] then return true end
+    end
+  end
+  
+  if map.mouse then
+    for _, v in pairs(map.mouse) do
+      if input.mouse[type][v] then return true end
+    end
+  end
+  
+  return false
+end
+
+function input.checkAxis(negative, positive, type)
+  local axis = 0
+  if input.check(negative, type) then axis = axis - 1 end
+  if input.check(positive, type) then axis = axis + 1 end
+  return axis
 end
 
 function input.update()
@@ -76,31 +101,6 @@ function input.mousereleased(x, y, button)
   m.down[button] = nil
   m.released.count = m.released.count + 1
   m.down.count = m.down.count - 1
-end
-
-function input._check(name, type)
-  local map = input._maps[name]
-  
-  if map.key then
-    for _, v in pairs(map.key) do
-      if input.key[type][v] then return true end
-    end
-  end
-  
-  if map.mouse then
-    for _, v in pairs(map.mouse) do
-      if input.mouse[type][v] then return true end
-    end
-  end
-  
-  return false
-end
-
-function input._checkAxis(negative, positive, type)
-  local axis = 0
-  if input._check(negative, type) then axis = axis - 1 end
-  if input._check(positive, type) then axis = axis + 1 end
-  return axis
 end
 
 for _, v in pairs{"pressed", "down", "released"} do
