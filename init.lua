@@ -1,2 +1,2 @@
-local path = ({...})[1]:gsub("%.init", "")
-input = require(path .. ".input")
+input = require(({...})[1]:gsub("%.init", "") .. ".input")
+ammo.ext.input = input
