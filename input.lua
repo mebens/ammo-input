@@ -1,7 +1,11 @@
-local input = {}
+input = {}
 input.key = {}
 input.mouse = {}
 input._maps = {}
+
+-- a couple of shortcuts
+key = input.key
+mouse = input.mouse
 
 function input.define(t, ...)
   if type(t) == "string" then
@@ -72,45 +76,39 @@ function input.update()
 end
 
 function input.keypressed(key)
-  local k = input.key
-  k.pressed[key] = true
-  k.down[key] = true
-  k.pressed.count = k.pressed.count + 1
-  k.down.count = k.down.count + 1
+  key.pressed[key] = true
+  key.down[key] = true
+  key.pressed.count = key.pressed.count + 1
+  key.down.count = key.down.count + 1
 end
 
 function input.keyreleased(key)
-  local k = input.key
-  k.released[key] = true
-  k.down[key] = nil
-  k.released.count = k.released.count + 1
-  k.down.count = k.down.count - 1
+  key.released[key] = true
+  key.down[key] = nil
+  key.released.count = key.released.count + 1
+  key.down.count = key.down.count - 1
 end
 
 function input.mousepressed(x, y, button)
-  local m = input.mouse
-  m.pressed[button] = true
-  m.down[button] = true
-  m.pressed.count = m.pressed.count + 1
-  m.down.count = m.down.count + 1
+  mouse.pressed[button] = true
+  mouse.down[button] = true
+  mouse.pressed.count = mouse.pressed.count + 1
+  mouse.down.count = mouse.down.count + 1
 end
 
 function input.mousereleased(x, y, button)
-  local m = input.mouse
-  m.released[button] = true
-  m.down[button] = nil
-  m.released.count = m.released.count + 1
-  m.down.count = m.down.count - 1
+  mouse.released[button] = true
+  mouse.down[button] = nil
+  mouse.released.count = mouse.released.count + 1
+  mouse.down.count = mouse.down.count - 1
 end
 
 for _, v in pairs{"pressed", "down", "released"} do
-  input.key[v] = { count = 0 }
-  input.mouse[v] = { count = 0 }
+  key[v] = { count = 0 }
+  mouse[v] = { count = 0 }
 end
 
 if not love.keypressed then love.keypressed = input.keypressed end
 if not love.keyreleased then love.keyreleased = input.keyreleased end
 if not love.mousepressed then love.mousepressed = input.mousepressed end
 if not love.mousereleased then love.mousereleased = input.mousereleased end
-
-return input
