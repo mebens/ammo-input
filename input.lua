@@ -67,24 +67,24 @@ function input.checkAxis(negative, positive, type)
 end
 
 function input.update()
-  input.key.pressed = { count = 0 }
-  input.key.released = { count = 0 }
-  input.mouse.pressed = { count = 0 }
-  input.mouse.released = { count = 0 }
-  input.mouse.x = love.mouse.getX()
-  input.mouse.y = love.mouse.getY()
+  key.pressed = { count = 0 }
+  key.released = { count = 0 }
+  mouse.pressed = { count = 0 }
+  mouse.released = { count = 0 }
+  mouse.x = love.mouse.getX()
+  mouse.y = love.mouse.getY()
 end
 
-function input.keypressed(key)
-  key.pressed[key] = true
-  key.down[key] = true
+function input.keypressed(k)
+  key.pressed[k] = true
+  key.down[k] = true
   key.pressed.count = key.pressed.count + 1
   key.down.count = key.down.count + 1
 end
 
-function input.keyreleased(key)
-  key.released[key] = true
-  key.down[key] = nil
+function input.keyreleased(k)
+  key.released[k] = true
+  key.down[k] = nil
   key.released.count = key.released.count + 1
   key.down.count = key.down.count - 1
 end
@@ -103,10 +103,9 @@ function input.mousereleased(x, y, button)
   mouse.down.count = mouse.down.count - 1
 end
 
-for _, v in pairs{"pressed", "down", "released"} do
-  key[v] = { count = 0 }
-  mouse[v] = { count = 0 }
-end
+key.down = { count = 0 }
+mouse.down = { count = 0 }
+input.update()
 
 if not love.keypressed then love.keypressed = input.keypressed end
 if not love.keyreleased then love.keyreleased = input.keyreleased end
