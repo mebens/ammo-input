@@ -107,7 +107,11 @@ key.down = { count = 0 }
 mouse.down = { count = 0 }
 input.update()
 
-if not love.keypressed then love.keypressed = input.keypressed end
-if not love.keyreleased then love.keyreleased = input.keyreleased end
-if not love.mousepressed then love.mousepressed = input.mousepressed end
-if not love.mousereleased then love.mousereleased = input.mousereleased end
+local null = function()end
+for _,fname in ipairs{"keypressed", "keyreleased", "mousepressed", "mousereleased"} do
+  local fn = love[fname] or null
+  love[fname] = function(...)
+    input[fname]()
+    fn()
+  end
+end
